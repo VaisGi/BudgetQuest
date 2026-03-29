@@ -32,6 +32,13 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":feature:dashboard"))
+    implementation(project(":feature:transaction"))
+    implementation(project(":feature:budget"))
+    implementation(project(":feature:savings"))
+    implementation(project(":feature:onboarding"))
+    implementation(project(":feature:quests"))
 
     // Compose
     implementation(libs.compose.activity)

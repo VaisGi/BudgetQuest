@@ -37,7 +37,8 @@ class LocalQuestRepository : QuestRepository {
     override suspend fun clearExpiredQuests() {
         val now = Clock.System.now().toEpochMilliseconds().toString()
         quests.value = quests.value.filter { quest ->
-            quest.expiresAt == null || quest.expiresAt > now || quest.isCompleted
+            val expires = quest.expiresAt
+            expires == null || expires > now || quest.isCompleted
         }
     }
 }
