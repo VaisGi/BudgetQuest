@@ -1,0 +1,171 @@
+-- BudgetQuest SQLDelight Schema
+-- All tables for offline-first persistence
+-- Future: sync these with backend via repository layer
+
+CREATE TABLE TransactionEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    amount REAL NOT NULL,
+    category TEXT NOT NULL,
+    description TEXT NOT NULL,
+    date TEXT NOT NULL,
+    isExpense INTEGER NOT NULL DEFAULT 1,
+    receiptUrl TEXT,
+    createdAt TEXT NOT NULL,
+    synced INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE BudgetEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    category TEXT NOT NULL,
+    limitAmount REAL NOT NULL,
+    monthYear TEXT NOT NULL,
+    UNIQUE(category, monthYear)
+);
+
+CREATE TABLE SavingsGoalEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    emoji TEXT NOT NULL DEFAULT '🎯',
+    targetAmount REAL NOT NULL,
+    savedAmount REAL NOT NULL DEFAULT 0.0,
+    deadlineMonthYear TEXT,
+    createdAt TEXT NOT NULL
+);
+
+CREATE TABLE UserProfileEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    displayName TEXT NOT NULL,
+    avatarId TEXT NOT NULL DEFAULT 'default_avatar',
+    level INTEGER NOT NULL DEFAULT 1,
+    totalXp INTEGER NOT NULL DEFAULT 0,
+    currentStreak INTEGER NOT NULL DEFAULT 0,
+    longestStreak INTEGER NOT NULL DEFAULT 0,
+    isPremium INTEGER NOT NULL DEFAULT 0,
+    lastActivityDate TEXT,
+    joinedDate TEXT NOT NULL
+);
+
+CREATE TABLE BadgeEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    emoji TEXT NOT NULL,
+    unlockedAt TEXT
+);
+
+CREATE TABLE QuestEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    emoji TEXT NOT NULL,
+    xpReward INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    targetValue REAL NOT NULL,
+    currentValue REAL NOT NULL DEFAULT 0.0,
+    isCompleted INTEGER NOT NULL DEFAULT 0,
+    expiresAt TEXT,
+    activatedAt TEXT NOT NULL
+);
+
+-- Queries for Transactions
+getTransactionsByMonth:
+SELECT * FROM TransactionEntity WHERE date LIKE :monthYear || '%' ORDER BY date DESC;
+
+getTransactionsByCategoryAndMonth:
+SELECT * FROM TransactionEntity WHERE category = :category AND date LIKE :monthYear || '%';
+
+insertTransaction:
+INSERT OR REPLACE INTO TransactionEntity(id, amount, category, description, date, isExpense, receiptUrl, createdAt, synced)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteTransaction:
+DELETE FROM TransactionEntity WHERE id = :id;
+
+getTotalSpentByMonth:
+SELECT COALESCE(SUM(amount), 0.0) FROM TransactionEntity WHERE isExpense = 1 AND date LIKE :monthYear || '%';
+
+getTotalSpentByCategoryAndMonth:
+SELECT COALESCE(SUM(amount), 0.0) FROM TransactionEntity WHERE isExpense = 1 AND category = :category AND date LIKE :monthYear || '%';
+
+-- Queries for Budgets
+getBudgetsByMonth:
+SELECT * FROM BudgetEntity WHERE monthYear = :monthYear;
+
+getBudgetByCategoryAndMonth:
+SELECT * FROM BudgetEntity WHERE category = :category AND monthYear = :monthYear;
+
+insertBudget:
+INSERT OR REPLACE INTO BudgetEntity(id, category, limitAmount, monthYear) VALUES (?, ?, ?, ?);
+
+deleteBudget:
+DELETE FROM BudgetEntity WHERE id = :id;
+
+-- Queries for Savings Goals
+getAllGoals:
+SELECT * FROM SavingsGoalEntity ORDER BY createdAt DESC;
+
+getGoalById:
+SELECT * FROM SavingsGoalEntity WHERE id = :id;
+
+insertGoal:
+INSERT OR REPLACE INTO SavingsGoalEntity(id, name, emoji, targetAmount, savedAmount, deadlineMonthYear, createdAt)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+updateGoalSavedAmount:
+UPDATE SavingsGoalEntity SET savedAmount = savedAmount + :amount WHERE id = :id;
+
+deleteGoal:
+DELETE FROM SavingsGoalEntity WHERE id = :id;
+
+getGoalCount:
+SELECT COUNT(*) FROM SavingsGoalEntity;
+
+-- Queries for User Profile
+getUserProfile:
+SELECT * FROM UserProfileEntity LIMIT 1;
+
+insertProfile:
+INSERT OR REPLACE INTO UserProfileEntity(id, displayName, avatarId, level, totalXp, currentStreak, longestStreak, isPremium, lastActivityDate, joinedDate)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+updateStreak:
+UPDATE UserProfileEntity SET currentStreak = :streak, longestStreak = MAX(longestStreak, :streak);
+
+updateXp:
+UPDATE UserProfileEntity SET totalXp = totalXp + :amount;
+
+updatePremium:
+UPDATE UserProfileEntity SET isPremium = :isPremium;
+
+updateAvatar:
+UPDATE UserProfileEntity SET avatarId = :avatarId;
+
+-- Queries for Badges
+getAllBadges:
+SELECT * FROM BadgeEntity;
+
+insertBadge:
+INSERT OR IGNORE INTO BadgeEntity(id, name, description, emoji, unlockedAt) VALUES (?, ?, ?, ?, ?);
+
+unlockBadge:
+UPDATE BadgeEntity SET unlockedAt = :unlockedAt WHERE id = :id AND unlockedAt IS NULL;
+
+-- Queries for Quests
+getActiveQuests:
+SELECT * FROM QuestEntity WHERE isCompleted = 0 ORDER BY activatedAt DESC;
+
+getCompletedQuests:
+SELECT * FROM QuestEntity WHERE isCompleted = 1 ORDER BY activatedAt DESC;
+
+insertQuest:
+INSERT OR REPLACE INTO QuestEntity(id, title, description, emoji, xpReward, type, targetValue, currentValue, isCompleted, expiresAt, activatedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+updateQuestProgress:
+UPDATE QuestEntity SET currentValue = :newValue WHERE id = :id;
+
+completeQuest:
+UPDATE QuestEntity SET isCompleted = 1 WHERE id = :id;
+
+deleteExpiredQuests:
+DELETE FROM QuestEntity WHERE expiresAt IS NOT NULL AND expiresAt < :now AND isCompleted = 0;
