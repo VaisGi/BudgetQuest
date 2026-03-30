@@ -17,6 +17,11 @@ android {
     buildFeatures {
         compose = true
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 kotlin {
@@ -57,5 +62,17 @@ kotlin {
             implementation(libs.compose.material.icons)
             implementation(libs.koin.compose)
         }
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(project(":core:testing"))
+                implementation(libs.junit)
+                implementation(libs.robolectric)
+                implementation(libs.compose.ui.test.junit4)
+            }
+        }
     }
+}
+
+dependencies {
+    debugImplementation(libs.compose.ui.test.manifest)
 }

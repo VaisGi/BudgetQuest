@@ -25,6 +25,7 @@ include(":core:database")
 include(":core:network")
 include(":core:presentation")
 include(":core:designsystem")
+include(":core:testing")
 
 // Feature Microfeatures
 include(":feature:dashboard")

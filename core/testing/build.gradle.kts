@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.budgetquest.core.domain"
+    namespace = "com.budgetquest.core.testing"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig { minSdk = libs.versions.android.minSdk.get().toInt() }
     compileOptions {
@@ -31,16 +31,16 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "CoreDomain"
+            baseName = "CoreTesting"
             isStatic = true
         }
     }
 
     sourceSets {
         commonMain.dependencies {
+            api(project(":core:domain"))
             implementation(libs.kotlin.stdlib)
             implementation(libs.kotlinx.coroutines.core)
-            implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
         }
         commonTest.dependencies {
