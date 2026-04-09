@@ -99,7 +99,7 @@ private fun QuestCard(quest: QuestCardConfig) {
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (quest.isCompleted)
-                PrimaryGreen.copy(alpha = 0.08f)
+                BQColor.EmeraldGreen.copy(alpha = 0.08f)
             else
                 MaterialTheme.colorScheme.surfaceVariant
         )
@@ -123,13 +123,13 @@ private fun QuestCard(quest: QuestCardConfig) {
                 }
                 Surface(
                     shape = RoundedCornerShape(12.dp),
-                    color = AccentGold.copy(alpha = 0.15f)
+                    color = BQColor.AmberGold.copy(alpha = 0.15f)
                 ) {
                     Text(
                         "+${quest.xpReward} XP",
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelMedium,
-                        color = AccentGold,
+                        color = BQColor.AmberGold,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -138,14 +138,14 @@ private fun QuestCard(quest: QuestCardConfig) {
             LinearProgressIndicator(
                 progress = { quest.progress },
                 modifier = Modifier.fillMaxWidth().height(10.dp).clip(RoundedCornerShape(5.dp)),
-                color = if (quest.isCompleted) PrimaryGreen else AccentPurple,
-                trackColor = AccentPurple.copy(alpha = 0.12f),
+                color = if (quest.isCompleted) BQColor.EmeraldGreen else BQColor.ElectricPurple,
+                trackColor = BQColor.ElectricPurple.copy(alpha = 0.12f),
             )
             Spacer(Modifier.height(8.dp))
             Text(
                 if (quest.isCompleted) "✅ Completed!" else "${(quest.progress * 100).toInt()}% complete",
                 style = MaterialTheme.typography.bodySmall,
-                color = if (quest.isCompleted) PrimaryGreen else MaterialTheme.colorScheme.onSurfaceVariant
+                color = if (quest.isCompleted) BQColor.EmeraldGreen else MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

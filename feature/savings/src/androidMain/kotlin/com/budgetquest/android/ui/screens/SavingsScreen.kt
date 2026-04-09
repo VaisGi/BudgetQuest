@@ -85,7 +85,7 @@ fun SavingsScreen(
                             Spacer(Modifier.height(16.dp))
                             Button(
                                 onClick = { viewModel.onEvent(SavingsEvent.OnAddGoalTapped) },
-                                colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen)
+                                colors = ButtonDefaults.buttonColors(containerColor = BQColor.EmeraldGreen)
                             ) {
                                 Text("Create Goal")
                             }
@@ -112,7 +112,7 @@ fun SavingsScreen(
             },
             confirmButton = {
                 TextButton(onClick = { viewModel.onEvent(SavingsEvent.OnDismissMilestone) }) {
-                    Text("Awesome!", color = PrimaryGreen)
+                    Text("Awesome!", color = BQColor.EmeraldGreen)
                 }
             }
         )
@@ -123,10 +123,10 @@ fun SavingsScreen(
 private fun SavingsGoalCard(goal: SavingsGoalItemConfig, onAddSavings: (Double) -> Unit) {
     val milestoneColor = when (goal.milestone) {
         SavingsMilestone.STARTED -> MaterialTheme.colorScheme.onSurfaceVariant
-        SavingsMilestone.QUARTER -> AccentBlue
-        SavingsMilestone.HALFWAY -> AccentGold
-        SavingsMilestone.THREE_QUARTERS -> AccentOrange
-        SavingsMilestone.COMPLETE -> PrimaryGreen
+        SavingsMilestone.QUARTER -> BQColor.ElectricPurple
+        SavingsMilestone.HALFWAY -> BQColor.AmberGold
+        SavingsMilestone.THREE_QUARTERS -> BQColor.AmberGoldLight
+        SavingsMilestone.COMPLETE -> BQColor.EmeraldGreen
     }
 
     Card(

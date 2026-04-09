@@ -101,7 +101,7 @@ class DashboardScreenTest {
         composeTestRule.onNodeWithText("Vaishakh", substring = true).assertExists()
         
         // Assert Streak logic
-        composeTestRule.onNodeWithText("12 Day Streak!").assertExists()
+        composeTestRule.onNodeWithText("12 DAY STREAK", substring = true).assertExists()
         
         // Premium banner might be scrolled off screen in Robolectric default bounds
         // Assert XP logic

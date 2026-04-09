@@ -72,8 +72,8 @@ fun TransactionScreen(
                     label = { Text("Expense") },
                     modifier = Modifier.weight(1f),
                     colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = AccentRed.copy(alpha = 0.15f),
-                        selectedLabelColor = AccentRed
+                        selectedContainerColor = BQColor.CrimsonRed.copy(alpha = 0.15f),
+                        selectedLabelColor = BQColor.CrimsonRed
                     )
                 )
                 FilterChip(
@@ -82,8 +82,8 @@ fun TransactionScreen(
                     label = { Text("Income") },
                     modifier = Modifier.weight(1f),
                     colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = PrimaryGreen.copy(alpha = 0.15f),
-                        selectedLabelColor = PrimaryGreen
+                        selectedContainerColor = BQColor.EmeraldGreen.copy(alpha = 0.15f),
+                        selectedLabelColor = BQColor.EmeraldGreen
                     )
                 )
             }
@@ -139,7 +139,7 @@ fun TransactionScreen(
 
             // Error
             config.errorMessage?.let {
-                Text(it, color = AccentRed, style = MaterialTheme.typography.bodySmall)
+                Text(it, color = BQColor.CrimsonRed, style = MaterialTheme.typography.bodySmall)
             }
 
             Spacer(Modifier.weight(1f))
@@ -153,7 +153,7 @@ fun TransactionScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = AccentGold.copy(alpha = 0.15f))
+                    colors = CardDefaults.cardColors(containerColor = BQColor.AmberGold.copy(alpha = 0.15f))
                 ) {
                     Row(
                         modifier = Modifier.padding(16.dp),
@@ -165,7 +165,7 @@ fun TransactionScreen(
                         Text(
                             "+${config.xpEarned} XP earned!",
                             style = MaterialTheme.typography.titleMedium,
-                            color = AccentGold,
+                            color = BQColor.AmberGold,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -179,7 +179,7 @@ fun TransactionScreen(
                 enabled = config.isAmountValid && !config.isSaving,
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (config.isExpense) AccentRed else PrimaryGreen
+                    containerColor = if (config.isExpense) BQColor.CrimsonRed else BQColor.EmeraldGreen
                 )
             ) {
                 if (config.isSaving) {
@@ -210,7 +210,7 @@ private fun CategoryChip(emoji: String, name: String, isSelected: Boolean, onCli
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(12.dp),
         color = if (isSelected)
-            PrimaryGreen.copy(alpha = 0.15f)
+            BQColor.EmeraldGreen.copy(alpha = 0.15f)
         else
             MaterialTheme.colorScheme.surfaceVariant,
         border = if (isSelected)
@@ -227,7 +227,7 @@ private fun CategoryChip(emoji: String, name: String, isSelected: Boolean, onCli
                 name,
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 1,
-                color = if (isSelected) PrimaryGreen else MaterialTheme.colorScheme.onSurfaceVariant
+                color = if (isSelected) BQColor.EmeraldGreen else MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

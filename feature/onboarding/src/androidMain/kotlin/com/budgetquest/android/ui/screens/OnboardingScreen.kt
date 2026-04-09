@@ -40,7 +40,7 @@ fun OnboardingScreen(
                 Brush.verticalGradient(
                     colors = listOf(
                         MaterialTheme.colorScheme.background,
-                        AccentPurple.copy(alpha = 0.05f)
+                        BQColor.ElectricPurple.copy(alpha = 0.05f)
                     )
                 )
             )
@@ -61,8 +61,8 @@ fun OnboardingScreen(
                             .size(if (index == config.currentStep) 24.dp else 8.dp, 8.dp)
                             .clip(RoundedCornerShape(4.dp))
                             .background(
-                                if (index <= config.currentStep) AccentPurple
-                                else AccentPurple.copy(alpha = 0.2f)
+                                if (index <= config.currentStep) BQColor.ElectricPurple
+                                else BQColor.ElectricPurple.copy(alpha = 0.2f)
                             )
                     )
                 }
@@ -121,7 +121,7 @@ fun OnboardingScreen(
                         }
                     },
                     shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = AccentPurple)
+                    colors = ButtonDefaults.buttonColors(containerColor = BQColor.ElectricPurple)
                 ) {
                     Text(
                         if (config.currentStep == config.totalSteps - 1) "Let's Go! 🚀" else "Next",
@@ -192,7 +192,7 @@ private fun GoalOption(goal: FinancialGoal, isSelected: Boolean, onClick: () -> 
     Surface(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
-        color = if (isSelected) AccentPurple.copy(alpha = 0.12f) else MaterialTheme.colorScheme.surfaceVariant,
+        color = if (isSelected) BQColor.ElectricPurple.copy(alpha = 0.12f) else MaterialTheme.colorScheme.surfaceVariant,
         border = if (isSelected) ButtonDefaults.outlinedButtonBorder else null
     ) {
         Row(
@@ -234,13 +234,13 @@ private fun IncomeStep(
             Surface(
                 modifier = Modifier.fillMaxWidth().clickable { onIncomeSelected(range) },
                 shape = RoundedCornerShape(12.dp),
-                color = if (selectedIncome == range) AccentPurple.copy(alpha = 0.12f) else MaterialTheme.colorScheme.surfaceVariant
+                color = if (selectedIncome == range) BQColor.ElectricPurple.copy(alpha = 0.12f) else MaterialTheme.colorScheme.surfaceVariant
             ) {
                 Text(
                     range.displayName,
                     modifier = Modifier.padding(16.dp),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = if (selectedIncome == range) AccentPurple else MaterialTheme.colorScheme.onSurface
+                    color = if (selectedIncome == range) BQColor.ElectricPurple else MaterialTheme.colorScheme.onSurface
                 )
             }
             Spacer(Modifier.height(8.dp))

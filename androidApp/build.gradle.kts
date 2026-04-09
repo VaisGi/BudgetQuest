@@ -32,6 +32,7 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    implementation(project(":core:database"))
     implementation(project(":core:designsystem"))
     implementation(project(":feature:dashboard"))
     implementation(project(":feature:transaction"))

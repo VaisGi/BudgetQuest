@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -72,9 +73,9 @@ fun BudgetScreen(
                             progress = { config.overallPercent },
                             modifier = Modifier.fillMaxWidth().height(12.dp).clip(RoundedCornerShape(6.dp)),
                             color = when {
-                                config.overallPercent > 0.8f -> AccentRed
-                                config.overallPercent > 0.5f -> AccentGold
-                                else -> PrimaryGreen
+                                config.overallPercent > 0.8f -> BQColor.CrimsonRed
+                                config.overallPercent > 0.5f -> BQColor.AmberGold
+                                else -> BQColor.EmeraldGreen
                             },
                             trackColor = MaterialTheme.colorScheme.surface,
                         )
@@ -90,7 +91,7 @@ fun BudgetScreen(
                             Text(
                                 "$${String.format("%.0f", config.totalLimit)} budget",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = PrimaryGreen
+                                color = BQColor.EmeraldGreen
                             )
                         }
                     }
@@ -128,10 +129,10 @@ fun BudgetScreen(
 @Composable
 private fun BudgetItemCard(budget: BudgetItemConfig) {
     val statusColor = when (budget.status) {
-        BudgetStatus.HEALTHY -> PrimaryGreen
-        BudgetStatus.MODERATE -> AccentGold
-        BudgetStatus.WARNING -> AccentOrange
-        BudgetStatus.OVER -> AccentRed
+        BudgetStatus.HEALTHY -> BQColor.EmeraldGreen
+        BudgetStatus.MODERATE -> BQColor.AmberGold
+        BudgetStatus.WARNING -> BQColor.AmberGoldLight
+        BudgetStatus.OVER -> BQColor.CrimsonRed
     }
 
     Card(
