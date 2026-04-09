@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetquest.android.ui.theme.*
+import com.budgetquest.android.ui.components.*
 import com.budgetquest.presentation.dashboard.QuestCardConfig
 import com.budgetquest.domain.usecase.GetQuestsUseCase
 import com.budgetquest.domain.repository.QuestRepository
@@ -74,10 +75,10 @@ fun QuestScreen(
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("⚔️", fontSize = 48.sp)
                             Spacer(Modifier.height(16.dp))
-                            Text("No active quests", style = MaterialTheme.typography.titleMedium)
+                            Text("No active quests", style = BQTypography.TitleBold)
                             Text(
                                 "New quests appear weekly",
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = BQTypography.BodyRegular,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
@@ -94,59 +95,37 @@ fun QuestScreen(
 
 @Composable
 private fun QuestCard(quest: QuestCardConfig) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (quest.isCompleted)
-                BQColor.EmeraldGreen.copy(alpha = 0.08f)
-            else
-                MaterialTheme.colorScheme.surfaceVariant
-        )
+    BQGlassCard(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(quest.emoji, fontSize = 32.sp)
-                    Text(
-                        quest.title,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Surface(
-                    shape = RoundedCornerShape(12.dp),
-                    color = BQColor.AmberGold.copy(alpha = 0.15f)
-                ) {
-                    Text(
-                        "+${quest.xpReward} XP",
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = BQColor.AmberGold,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(quest.emoji, fontSize = 32.sp)
+                Text(
+                    quest.title,
+                    style = BQTypography.TitleBold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
-            Spacer(Modifier.height(16.dp))
-            LinearProgressIndicator(
-                progress = { quest.progress },
-                modifier = Modifier.fillMaxWidth().height(10.dp).clip(RoundedCornerShape(5.dp)),
-                color = if (quest.isCompleted) BQColor.EmeraldGreen else BQColor.ElectricPurple,
-                trackColor = BQColor.ElectricPurple.copy(alpha = 0.12f),
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                if (quest.isCompleted) "✅ Completed!" else "${(quest.progress * 100).toInt()}% complete",
-                style = MaterialTheme.typography.bodySmall,
-                color = if (quest.isCompleted) BQColor.EmeraldGreen else MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            BQXPBadge(xp = quest.xpReward)
         }
+        Spacer(Modifier.height(16.dp))
+        BQProgressBar(
+            progress = quest.progress,
+            color = if (quest.isCompleted) BQColor.EmeraldGreen else BQColor.ElectricPurple
+        )
+        Spacer(Modifier.height(8.dp))
+        Text(
+            if (quest.isCompleted) "✅ Completed!" else "${(quest.progress * 100).toInt()}% complete",
+            style = BQTypography.LabelSmall,
+            color = if (quest.isCompleted) BQColor.EmeraldGreen else MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }

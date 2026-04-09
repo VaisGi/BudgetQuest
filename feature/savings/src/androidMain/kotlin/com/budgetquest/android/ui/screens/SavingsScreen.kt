@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetquest.android.ui.theme.*
+import com.budgetquest.android.ui.components.*
 import com.budgetquest.domain.model.SavingsMilestone
 import com.budgetquest.presentation.savings.*
 import org.koin.compose.koinInject
@@ -76,10 +77,10 @@ fun SavingsScreen(
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("🎯", fontSize = 48.sp)
                             Spacer(Modifier.height(16.dp))
-                            Text("No savings goals", style = MaterialTheme.typography.titleMedium)
+                            Text("No savings goals", style = BQTypography.TitleBold)
                             Text(
                                 "Set a goal and start saving!",
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = BQTypography.BodyRegular,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(Modifier.height(16.dp))
@@ -129,56 +130,50 @@ private fun SavingsGoalCard(goal: SavingsGoalItemConfig, onAddSavings: (Double) 
         SavingsMilestone.COMPLETE -> BQColor.EmeraldGreen
     }
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    BQGlassCard(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(goal.emoji, fontSize = 32.sp)
-                    Column {
-                        Text(goal.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                        Text(
-                            "${goal.milestone.badge} ${goal.milestone.displayName}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = milestoneColor
-                        )
-                    }
+                Text(goal.emoji, fontSize = 32.sp)
+                Column {
+                    Text(goal.name, style = BQTypography.TitleBold, color = MaterialTheme.colorScheme.onSurface)
+                    Text(
+                        "${goal.milestone.badge} ${goal.milestone.displayName}",
+                        style = BQTypography.LabelSmall,
+                        color = milestoneColor
+                    )
                 }
             }
-            Spacer(Modifier.height(16.dp))
-            LinearProgressIndicator(
-                progress = { goal.progress },
-                modifier = Modifier.fillMaxWidth().height(12.dp).clip(RoundedCornerShape(6.dp)),
-                color = milestoneColor,
-                trackColor = milestoneColor.copy(alpha = 0.12f),
+        }
+        Spacer(Modifier.height(16.dp))
+        BQProgressBar(
+            progress = goal.progress,
+            color = milestoneColor
+        )
+        Spacer(Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                "$${String.format("%.0f", goal.savedAmount)} saved",
+                style = BQTypography.LabelMedium,
+                color = milestoneColor
             )
-            Spacer(Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    "$${String.format("%.0f", goal.savedAmount)} saved",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = milestoneColor
-                )
-                Text(
-                    "of $${String.format("%.0f", goal.targetAmount)}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+            Text(
+                "of $${String.format("%.0f", goal.targetAmount)}",
+                style = BQTypography.LabelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
 
             if (!goal.isCompleted) {
                 Spacer(Modifier.height(12.dp))
@@ -194,6 +189,5 @@ private fun SavingsGoalCard(goal: SavingsGoalItemConfig, onAddSavings: (Double) 
                     }
                 }
             }
-        }
     }
 }

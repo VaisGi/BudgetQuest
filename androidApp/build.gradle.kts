@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -50,6 +51,7 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.compose.lifecycle.runtime)
     implementation(libs.compose.lifecycle.viewmodel)
+    implementation(libs.kotlinx.serialization.json)
     debugImplementation(libs.compose.ui.tooling)
 
     // Koin

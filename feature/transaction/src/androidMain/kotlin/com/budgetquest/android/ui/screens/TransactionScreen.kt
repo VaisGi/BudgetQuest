@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetquest.android.ui.theme.*
+import com.budgetquest.android.ui.components.*
 import com.budgetquest.presentation.transaction.*
 import org.koin.compose.koinInject
 
@@ -92,11 +93,11 @@ fun TransactionScreen(
             OutlinedTextField(
                 value = config.amount,
                 onValueChange = { viewModel.onEvent(TransactionEvent.OnAmountChanged(it)) },
-                label = { Text("Amount") },
-                prefix = { Text("$", fontWeight = FontWeight.Bold, fontSize = 20.sp) },
+                label = { Text("Amount", style = BQTypography.LabelSmall) },
+                prefix = { Text("$", style = BQTypography.TitleBold, fontSize = 20.sp) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                textStyle = MaterialTheme.typography.headlineMedium,
+                textStyle = BQTypography.DisplayMedium,
                 shape = RoundedCornerShape(16.dp),
                 singleLine = true,
                 isError = config.errorMessage != null
@@ -106,8 +107,9 @@ fun TransactionScreen(
             OutlinedTextField(
                 value = config.description,
                 onValueChange = { viewModel.onEvent(TransactionEvent.OnDescriptionChanged(it)) },
-                label = { Text("Description (optional)") },
+                label = { Text("Description (optional)", style = BQTypography.LabelSmall) },
                 modifier = Modifier.fillMaxWidth(),
+                textStyle = BQTypography.BodyRegular,
                 shape = RoundedCornerShape(16.dp),
                 singleLine = true
             )
@@ -115,8 +117,7 @@ fun TransactionScreen(
             // Category Grid
             Text(
                 "Category",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                style = BQTypography.TitleBold
             )
 
             LazyVerticalGrid(
@@ -139,7 +140,7 @@ fun TransactionScreen(
 
             // Error
             config.errorMessage?.let {
-                Text(it, color = BQColor.CrimsonRed, style = MaterialTheme.typography.bodySmall)
+                Text(it, color = BQColor.CrimsonRed, style = BQTypography.LabelSmall)
             }
 
             Spacer(Modifier.weight(1f))
@@ -150,10 +151,8 @@ fun TransactionScreen(
                 enter = fadeIn() + scaleIn(),
                 exit = fadeOut()
             ) {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = BQColor.AmberGold.copy(alpha = 0.15f))
+                BQGlassCard(
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
                         modifier = Modifier.padding(16.dp),
@@ -164,9 +163,8 @@ fun TransactionScreen(
                         Spacer(Modifier.width(8.dp))
                         Text(
                             "+${config.xpEarned} XP earned!",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = BQColor.AmberGold,
-                            fontWeight = FontWeight.Bold
+                            style = BQTypography.TitleBold,
+                            color = BQColor.AmberGoldLight
                         )
                     }
                 }
@@ -225,7 +223,7 @@ private fun CategoryChip(emoji: String, name: String, isSelected: Boolean, onCli
             Spacer(Modifier.height(4.dp))
             Text(
                 name,
-                style = MaterialTheme.typography.bodySmall,
+                style = BQTypography.LabelSmall,
                 maxLines = 1,
                 color = if (isSelected) BQColor.EmeraldGreen else MaterialTheme.colorScheme.onSurfaceVariant
             )

@@ -1,8 +1,10 @@
 package com.budgetquest.android.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -18,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetquest.android.ui.theme.*
+import com.budgetquest.android.ui.components.*
 import com.budgetquest.domain.model.BudgetStatus
 import com.budgetquest.presentation.budget.*
 import org.koin.compose.koinInject
@@ -61,39 +64,33 @@ fun BudgetScreen(
         ) {
             // Overall Progress
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-                ) {
-                    Column(modifier = Modifier.padding(20.dp)) {
-                        Text("Monthly Overview", style = MaterialTheme.typography.titleMedium)
-                        Spacer(Modifier.height(8.dp))
-                        LinearProgressIndicator(
-                            progress = { config.overallPercent },
-                            modifier = Modifier.fillMaxWidth().height(12.dp).clip(RoundedCornerShape(6.dp)),
-                            color = when {
-                                config.overallPercent > 0.8f -> BQColor.CrimsonRed
-                                config.overallPercent > 0.5f -> BQColor.AmberGold
-                                else -> BQColor.EmeraldGreen
-                            },
-                            trackColor = MaterialTheme.colorScheme.surface,
-                        )
-                        Spacer(Modifier.height(8.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                "$${String.format("%.0f", config.totalSpent)} spent",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                            Text(
-                                "$${String.format("%.0f", config.totalLimit)} budget",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = BQColor.EmeraldGreen
-                            )
+                BQGlassCard {
+                    Text("Monthly Overview", style = BQTypography.TitleBold, color = MaterialTheme.colorScheme.onSurface)
+                    Spacer(Modifier.height(12.dp))
+                    BQProgressBar(
+                        progress = config.overallPercent,
+                        color = when {
+                            config.overallPercent > 0.8f -> BQColor.CrimsonRed
+                            config.overallPercent > 0.5f -> BQColor.AmberGold
+                            else -> BQColor.EmeraldGreen
                         }
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            "$${String.format("%.0f", config.totalSpent)} spent",
+                            style = BQTypography.LabelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            "$${String.format("%.0f", config.totalLimit)} budget",
+                            style = BQTypography.LabelMedium,
+                            color = BQColor.EmeraldGreenLight,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }
@@ -135,44 +132,46 @@ private fun BudgetItemCard(budget: BudgetItemConfig) {
         BudgetStatus.OVER -> BQColor.CrimsonRed
     }
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    BQGlassCard(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(statusColor.copy(alpha = 0.1f)),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(budget.categoryEmoji, fontSize = 28.sp)
-                    Column {
-                        Text(budget.categoryName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-                        Text(
-                            "$${String.format("%.0f", budget.remaining)} remaining",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = statusColor
-                        )
-                    }
+                    Text(budget.categoryEmoji, fontSize = 24.sp)
                 }
-                Text(
-                    "$${String.format("%.0f", budget.spent)} / $${String.format("%.0f", budget.limit)}",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = statusColor
-                )
+                Column {
+                    Text(budget.categoryName, style = BQTypography.TitleBold, color = MaterialTheme.colorScheme.onSurface)
+                    Text(
+                        "$${String.format("%.0f", budget.remaining)} remaining",
+                        style = BQTypography.LabelSmall,
+                        color = statusColor
+                    )
+                }
             }
-            Spacer(Modifier.height(12.dp))
-            LinearProgressIndicator(
-                progress = { budget.percentUsed },
-                modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)),
-                color = statusColor,
-                trackColor = statusColor.copy(alpha = 0.12f),
+            Text(
+                "$${String.format("%.0f", budget.spent)} / $${String.format("%.0f", budget.limit)}",
+                style = BQTypography.TitleBold,
+                color = statusColor
             )
         }
+        Spacer(Modifier.height(16.dp))
+        BQProgressBar(
+            progress = budget.percentUsed,
+            color = statusColor
+        )
     }
 }
