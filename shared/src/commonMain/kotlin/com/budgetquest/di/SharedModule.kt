@@ -11,6 +11,8 @@ import com.budgetquest.presentation.dashboard.DashboardViewModel
 import com.budgetquest.presentation.onboarding.OnboardingViewModel
 import com.budgetquest.presentation.savings.SavingsViewModel
 import com.budgetquest.presentation.transaction.TransactionViewModel
+import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.gotrue.Auth
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
@@ -25,6 +27,16 @@ fun createSharedModule(driverFactory: DatabaseDriverFactory) = module {
     // ── Database ──────────────────────────────────────────────────────────────
     single { createBudgetQuestDatabase(driverFactory) }
     single { get<BudgetQuestDatabase>().budgetQuestDatabaseQueries }
+
+    // ── Network / Supabase ────────────────────────────────────────────────────
+    single {
+        createSupabaseClient(
+            supabaseUrl = "YOUR_SUPABASE_URL",
+            supabaseKey = "YOUR_SUPABASE_ANON_KEY"
+        ) {
+            install(Auth)
+        }
+    }
 
     // ── Repositories (SQLDelight-backed) ──────────────────────────────────────
     single<TransactionRepository> { SqlDelightTransactionRepository(get()) }

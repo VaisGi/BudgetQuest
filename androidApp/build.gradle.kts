@@ -60,4 +60,8 @@ dependencies {
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
+
+    // Security & Biometrics
+    implementation(libs.androidx.biometric)
+    implementation(libs.androidx.security.crypto)
 }

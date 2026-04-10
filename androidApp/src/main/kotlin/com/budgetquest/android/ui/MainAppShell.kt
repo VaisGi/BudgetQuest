@@ -27,6 +27,7 @@ val topLevelRoutes = listOf(
 @Composable
 fun MainAppShell(
     isOnboarded: Boolean,
+    isLoggedIn: Boolean = false,
     onCompleteOnboarding: () -> Unit,
     navController: NavHostController = rememberNavController()
 ) {
@@ -82,6 +83,7 @@ fun MainAppShell(
     ) { innerPadding ->
         BudgetQuestNavHost(
             isOnboarded = isOnboarded,
+            isLoggedIn = isLoggedIn,
             onCompleteOnboarding = onCompleteOnboarding,
             navController = navController,
             modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())

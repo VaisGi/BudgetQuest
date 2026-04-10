@@ -23,10 +23,14 @@ class MainActivity : ComponentActivity() {
             var isOnboarded by remember { 
                 mutableStateOf(prefs.getBoolean("is_onboarded", false)) 
             }
+            var isLoggedIn by remember {
+                mutableStateOf(prefs.getBoolean("is_logged_in", false))
+            }
 
             BudgetQuestTheme {
                 MainAppShell(
                     isOnboarded = isOnboarded,
+                    isLoggedIn = isLoggedIn,
                     onCompleteOnboarding = {
                         prefs.edit().putBoolean("is_onboarded", true).apply()
                         isOnboarded = true

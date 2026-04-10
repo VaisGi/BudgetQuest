@@ -11,6 +11,12 @@ import kotlinx.serialization.Serializable
 data object Onboarding
 
 @Serializable
+data object Login
+
+@Serializable
+data class OtpVerification(val emailOrPhone: String)
+
+@Serializable
 data object Dashboard
 
 @Serializable
