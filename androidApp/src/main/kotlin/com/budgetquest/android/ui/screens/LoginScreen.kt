@@ -10,7 +10,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.budgetquest.android.ui.components.BQGlassCard
-import com.budgetquest.android.ui.theme.BQTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +32,7 @@ fun LoginScreen(
             ) {
                 Text(
                     text = "Welcome Back",
-                    style = BQTypography.headlineMedium,
+                    style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 24.dp)
                 )
@@ -82,7 +81,7 @@ fun LoginScreen(
 
                     Text(
                         text = "Forgot Password?",
-                        style = BQTypography.bodySmall,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .align(Alignment.End)

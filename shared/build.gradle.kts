@@ -33,7 +33,9 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.kotlin.stdlib)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.serialization.json)
             implementation(libs.koin.core)
+            implementation(libs.supabase.gotrue)
             
             // Umbrella setup: Export specific core functionality to iOS via api()
             api(project(":core:domain"))

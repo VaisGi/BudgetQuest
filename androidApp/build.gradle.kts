@@ -64,4 +64,10 @@ dependencies {
     // Security & Biometrics
     implementation(libs.androidx.biometric)
     implementation(libs.androidx.security.crypto)
+
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation("androidx.test:core:1.5.0")
+    testImplementation("org.robolectric:shadows-framework:4.13")
 }

@@ -13,7 +13,7 @@ import com.budgetquest.presentation.savings.SavingsViewModel
 import com.budgetquest.presentation.transaction.TransactionViewModel
 import com.budgetquest.presentation.auth.AuthViewModel
 import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.auth.Auth
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 

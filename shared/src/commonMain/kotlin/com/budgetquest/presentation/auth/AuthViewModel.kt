@@ -1,9 +1,10 @@
 package com.budgetquest.presentation.auth
 
 import io.github.jan.supabase.SupabaseClient
-import io.github.jan.supabase.gotrue.auth
-import io.github.jan.supabase.gotrue.providers.builtin.Email
-import io.github.jan.supabase.gotrue.providers.builtin.OTP
+import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.builtin.Email
+import io.github.jan.supabase.auth.providers.builtin.Phone
+import io.github.jan.supabase.auth.OtpType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,7 +45,7 @@ class AuthViewModel(
         scope.launch {
             _authState.value = AuthState(isLoading = true)
             try {
-                supabaseClient.auth.signInWith(OTP) {
+                supabaseClient.auth.signInWith(Phone) {
                     this.phone = phone
                 }
                 _authState.value = AuthState(isSuccess = true)
@@ -59,7 +60,7 @@ class AuthViewModel(
             _authState.value = AuthState(isLoading = true)
             try {
                 supabaseClient.auth.verifyPhoneOtp(
-                    type = io.github.jan.supabase.gotrue.OtpType.Phone.SMS,
+                    type = OtpType.Phone.SMS,
                     phone = phone,
                     token = token
                 )

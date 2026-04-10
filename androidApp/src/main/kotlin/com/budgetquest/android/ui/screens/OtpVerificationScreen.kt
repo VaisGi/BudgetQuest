@@ -10,8 +10,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.budgetquest.android.ui.components.BQGlassCard
-import com.budgetquest.android.ui.theme.BQTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,14 +33,14 @@ fun OtpVerificationScreen(
             ) {
                 Text(
                     text = "Verify OTP",
-                    style = BQTypography.headlineMedium,
+                    style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
                 Text(
                     text = "A 6-digit code has been sent to $emailOrPhone",
-                    style = BQTypography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(bottom = 24.dp)
@@ -55,7 +55,7 @@ fun OtpVerificationScreen(
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     placeholder = { Text("Enter 6-digit code") },
-                    textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center, letterSpacing = 8.dp),
+                    textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center, letterSpacing = 8.sp),
                     modifier = Modifier.fillMaxWidth()
                 )
 
